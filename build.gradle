@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'org.hidetake.swagger.generator' version '2.10.0'
 }
 
 group = 'com.db.dataplatform'
@@ -21,12 +22,13 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '2.3.8'
 	compile group: 'org.apache.httpcomponents', name: 'httpclient'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testCompile group: 'org.assertj', name: 'assertj-core', version: '3.4.1'
 	testImplementation 'org.awaitility:awaitility:3.1.6'
-
 }
 
 test {
