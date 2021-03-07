@@ -27,6 +27,8 @@ public class TestDataHelper {
         DataBodyEntity dataBodyEntity = new DataBodyEntity();
         dataBodyEntity.setDataHeaderEntity(dataHeaderEntity);
         dataBodyEntity.setDataBody(DUMMY_DATA);
+        dataBodyEntity.setDataStoreId(1l);
+        dataBodyEntity.setTimestamps();
         return dataBodyEntity;
     }
 

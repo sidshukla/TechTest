@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(
@@ -15,7 +16,6 @@ import java.time.Instant;
 )
 @Setter
 @Getter
-@EqualsAndHashCode
 public class DataHeaderEntity {
 
     @Id
@@ -40,5 +40,18 @@ public class DataHeaderEntity {
         if (createdTimestamp == null) {
             createdTimestamp = Instant.now();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataHeaderEntity)) return false;
+        DataHeaderEntity that = (DataHeaderEntity) o;
+        return Objects.equals(dataHeaderId, that.dataHeaderId) && Objects.equals(name, that.name) && blocktype == that.blocktype;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dataHeaderId, name, blocktype);
     }
 }

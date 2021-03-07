@@ -7,7 +7,6 @@ import com.db.dataplatform.techtest.server.service.DataBodyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,12 +21,12 @@ public class DataBodyServiceImpl implements DataBodyService {
     }
 
     @Override
-    public List<DataBodyEntity> getDataByBlockType(BlockTypeEnum blockType) {
-        return null;
+    public DataBodyEntity getDataByBlockType(BlockTypeEnum blockType) {
+        return dataStoreRepository.findByBlockType(blockType.toString());
     }
 
     @Override
     public Optional<DataBodyEntity> getDataByBlockName(String blockName) {
-        return null;
+        return dataStoreRepository.findByBlockName(blockName);
     }
 }

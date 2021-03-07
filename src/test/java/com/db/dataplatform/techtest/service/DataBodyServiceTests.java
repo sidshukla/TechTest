@@ -1,5 +1,6 @@
 package com.db.dataplatform.techtest.service;
 
+import com.db.dataplatform.techtest.server.persistence.BlockTypeEnum;
 import com.db.dataplatform.techtest.server.persistence.model.DataBodyEntity;
 import com.db.dataplatform.techtest.server.persistence.model.DataHeaderEntity;
 import com.db.dataplatform.techtest.server.persistence.repository.DataStoreRepository;
@@ -44,6 +45,22 @@ public class DataBodyServiceTests {
 
         verify(dataStoreRepositoryMock, times(1))
                 .save(eq(expectedDataBodyEntity));
+    }
+
+    @Test
+    public void shouldGetDataByBlockTypeAsExpectedWhenFound(){
+        dataBodyService.getDataByBlockType(BlockTypeEnum.BLOCKTYPEA);
+
+        verify(dataStoreRepositoryMock, times(1))
+                .findByBlockType(eq(BlockTypeEnum.BLOCKTYPEA.toString()));
+    }
+
+    @Test
+    public void shouldGetDataByBlockNameAsExpectedWhenFound(){
+        dataBodyService.getDataByBlockName("TEST_NAME");
+
+        verify(dataStoreRepositoryMock, times(1))
+                .findByBlockName(eq("TEST_NAME"));
     }
 
 }

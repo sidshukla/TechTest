@@ -6,12 +6,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "DATA_STORE")
 @Setter
 @Getter
-@EqualsAndHashCode
 public class DataBodyEntity {
 
     @Id
@@ -35,5 +35,18 @@ public class DataBodyEntity {
         if (createdTimestamp == null) {
             createdTimestamp = Instant.now();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataBodyEntity)) return false;
+        DataBodyEntity that = (DataBodyEntity) o;
+        return Objects.equals(dataStoreId, that.dataStoreId) && Objects.equals(dataHeaderEntity, that.dataHeaderEntity) && Objects.equals(dataBody, that.dataBody);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dataStoreId, dataHeaderEntity, dataBody);
     }
 }

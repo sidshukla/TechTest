@@ -29,7 +29,6 @@ public class ServerImpl implements Server {
      */
     @Override
     public boolean saveDataEnvelope(DataEnvelope envelope) {
-
         // Save to persistence.
         persist(envelope);
 
@@ -51,9 +50,7 @@ public class ServerImpl implements Server {
 
     @Override
     public boolean updateBlockTypeOnBlockName(String blockName, BlockTypeEnum blockType){
-        DataBodyEntity dataBodyEntity = dataBodyServiceImpl.getDataByBlockName(blockName);
-
-        //TODO add null check
+        DataBodyEntity dataBodyEntity = dataBodyServiceImpl.getDataByBlockName(blockName).orElseThrow(IllegalArgumentException::new);
 
         DataHeaderEntity dataHeaderEntity = dataBodyEntity.getDataHeaderEntity();
 

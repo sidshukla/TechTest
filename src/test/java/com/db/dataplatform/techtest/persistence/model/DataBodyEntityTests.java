@@ -39,7 +39,7 @@ public class DataBodyEntityTests {
         DataHeaderEntity dataHeaderEntity1 = new DataHeaderEntity();
         dataHeaderEntity1.setName(TEST_NAME);
         dataHeaderEntity1.setBlocktype(BlockTypeEnum.BLOCKTYPEA);
-        dataHeaderEntity1.setCreatedTimestamp(Instant.now());
+        dataHeaderEntity1.setTimestamps();
         DataBodyEntity dataBodyEntity1 = createTestDataBodyEntity(dataHeaderEntity1);
 
         DataHeaderEntity dataHeaderEntity2 = new DataHeaderEntity();

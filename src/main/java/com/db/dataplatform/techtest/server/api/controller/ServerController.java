@@ -60,6 +60,7 @@ public class ServerController {
 
         boolean response = false;
 
+        //TODO add better validation and test case
         if(StringUtils.isEmpty(blockName)){
             throw new IllegalArgumentException("Block name not found");
         }
