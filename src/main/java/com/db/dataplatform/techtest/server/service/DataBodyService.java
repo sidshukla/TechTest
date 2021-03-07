@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface DataBodyService {
     void saveDataBody(DataBodyEntity dataBody);
-    DataBodyEntity getDataByBlockType(BlockTypeEnum blockType);
+    List<DataBodyEntity> getDataByBlockType(BlockTypeEnum blockType);
     Optional<DataBodyEntity> getDataByBlockName(String blockName);
 }

@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,13 +40,19 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public DataEnvelope getDataEnvelopes(BlockTypeEnum blockType) {
+    public List<DataEnvelope> getDataEnvelopes(BlockTypeEnum blockType) {
         log.info("Getting data envelope for block Type: {}", blockType);
-        DataBodyEntity dataBodyEntity = dataBodyServiceImpl.getDataByBlockType(blockType);
+        List<DataBodyEntity> dataBodyEntities = dataBodyServiceImpl.getDataByBlockType(blockType);
 
-        DataEnvelope dataEnvelopes = new DataEnvelope();
-        DataHeader dataHeader = modelMapper.map(dataBodyEntity.getDataHeaderEntity() , DataHeader.class);
-        DataBody dataBody = modelMapper.map(dataBodyEntity, DataBody.class);
+        List<DataEnvelope> dataEnvelopes = new ArrayList<>();
+        for(DataBodyEntity dataBodyEntity : dataBodyEntities){
+
+            DataHeader dataHeader = modelMapper.map(dataBodyEntity.getDataHeaderEntity() , DataHeader.class);
+            DataBody dataBody = modelMapper.map(dataBodyEntity, DataBody.class);
+            DataEnvelope dataEnvelope = new DataEnvelope(dataHeader,dataBody);
+            dataEnvelopes.add(dataEnvelope);
+        }
+
 
         return dataEnvelopes;
     }

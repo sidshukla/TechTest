@@ -6,6 +6,7 @@ import com.db.dataplatform.techtest.server.api.model.DataEnvelope;
 import com.db.dataplatform.techtest.server.component.Server;
 import com.db.dataplatform.techtest.server.exception.HadoopClientException;
 import com.db.dataplatform.techtest.server.persistence.BlockTypeEnum;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +23,8 @@ import org.springframework.web.util.UriTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,7 +59,7 @@ public class ServerControllerComponentTest {
 		testDataEnvelope = TestDataHelper.createTestDataEnvelopeApiObject();
 
 		when(serverMock.saveDataEnvelope(any(DataEnvelope.class))).thenReturn(true);
-		when(serverMock.getDataEnvelopes(any(BlockTypeEnum.class))).thenReturn(testDataEnvelope);
+		when(serverMock.getDataEnvelopes(any(BlockTypeEnum.class))).thenReturn(Arrays.asList(testDataEnvelope));
 		when(serverMock.updateBlockTypeOnBlockName(any(String.class),any(BlockTypeEnum.class))).thenReturn(true);
 	}
 
@@ -85,7 +88,10 @@ public class ServerControllerComponentTest {
 				.andReturn();
 
 		String actualResult = mvcResult.getResponse().getContentAsString();
-		Assert.assertEquals(testDataEnvelope,new ObjectMapper().readValue(actualResult, DataEnvelope.class));
+		List<DataEnvelope> actualDataResponse = new ObjectMapper().readValue(actualResult
+				, new TypeReference<List<DataEnvelope>>() {});
+		Assert.assertEquals(actualDataResponse.size(),1);
+		Assert.assertEquals(testDataEnvelope,actualDataResponse.get(0));
 	}
 
 	@Test
@@ -101,4 +107,5 @@ public class ServerControllerComponentTest {
 		boolean checksumPass = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
 		assertThat(checksumPass).isTrue();
 	}
+
 }

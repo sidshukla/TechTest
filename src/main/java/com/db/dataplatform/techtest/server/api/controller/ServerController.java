@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -46,34 +47,24 @@ public class ServerController {
     }
 
     @GetMapping(value = "/data/{blockType}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DataEnvelope> getData(@PathVariable(name="blockType") String blockType) {
+    public ResponseEntity<List<DataEnvelope>> getData(@PathVariable(name="blockType") String blockType) {
         log.info("Block type request received: {}", blockType);
 
-        //TODO add validation on enum
         return ResponseEntity.ok().body(server.getDataEnvelopes(BlockTypeEnum.valueOf(blockType)));
 
     }
 
     @PatchMapping(value = "/update/{blockName}/{newBlockType}",  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> updateData(@Valid @PathVariable(name="blockName") String blockName,@PathVariable(name="newBlockType") String newBlockType) throws IllegalArgumentException {
+    public ResponseEntity<Boolean> updateData(@Valid @PathVariable(name="blockName") String blockName,@PathVariable(name="newBlockType") String newBlockType) {
         log.info("Block type update request received newBlockType: {} for blockName {}", newBlockType,blockName);
 
         boolean response = false;
-
-        //TODO add better validation and test case
-        if(StringUtils.isEmpty(blockName)){
-            throw new IllegalArgumentException("Block name not found");
-        }
-
-        //TODO add validation on enum
         response = server.updateBlockTypeOnBlockName(blockName,BlockTypeEnum.valueOf(newBlockType));
 
         return ResponseEntity.ok(response);
-
     }
 
     @Async
-    //TODO review this code
     public CompletableFuture<HttpStatus> pushToDataLake(String dataEnvelope) {
         log.info("Push to data lake for data :  {}" , dataEnvelope);
         try{

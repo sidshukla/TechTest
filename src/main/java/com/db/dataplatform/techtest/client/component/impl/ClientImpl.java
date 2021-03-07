@@ -5,6 +5,7 @@ import com.db.dataplatform.techtest.client.component.Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
@@ -42,10 +43,8 @@ public class ClientImpl implements Client {
     public List<DataEnvelope> getData(String blockType) {
         log.info("Query for data with header block type {}", blockType);
         URI getData = URI_GETDATA.expand(blockType);
-        //TODO return list
-        DataEnvelope response = restTemplate.getForObject(getData, DataEnvelope.class);
-        log.info("Get data response {}", response);
-        return Arrays.asList(response);
+        ResponseEntity<DataEnvelope[]> dataEnvelope = restTemplate.getForEntity(getData,DataEnvelope[].class);
+        return Arrays.asList(dataEnvelope.getBody());
     }
 
     @Override

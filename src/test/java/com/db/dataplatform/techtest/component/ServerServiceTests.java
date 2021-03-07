@@ -19,6 +19,8 @@ import org.modelmapper.ModelMapper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.db.dataplatform.techtest.TestDataHelper.createTestDataEnvelopeApiObject;
@@ -59,7 +61,7 @@ public class ServerServiceTests {
         Optional<DataBodyEntity> dataBodyEntity = Optional.of(expectedDataBodyEntity);
 
         when(dataBodyServiceImplMock.getDataByBlockName(any(String.class))).thenReturn(dataBodyEntity);
-        when(dataBodyServiceImplMock.getDataByBlockType(any(BlockTypeEnum.class))).thenReturn(expectedDataBodyEntity);
+        when(dataBodyServiceImplMock.getDataByBlockType(any(BlockTypeEnum.class))).thenReturn(Arrays.asList(expectedDataBodyEntity));
     }
 
     @Test
@@ -72,7 +74,7 @@ public class ServerServiceTests {
 
     @Test
     public void shouldGetDataEnvelopeAsExpected() throws NoSuchAlgorithmException, IOException {
-        DataEnvelope actualDataEnvelope = server.getDataEnvelopes(BlockTypeEnum.BLOCKTYPEA);
+        List<DataEnvelope> actualDataEnvelope = server.getDataEnvelopes(BlockTypeEnum.BLOCKTYPEA);
 
         verify(dataBodyServiceImplMock, times(1)).getDataByBlockType(eq(BlockTypeEnum.BLOCKTYPEA));
     }
