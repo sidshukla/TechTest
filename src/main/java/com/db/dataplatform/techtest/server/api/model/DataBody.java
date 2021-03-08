@@ -20,4 +20,7 @@ public class DataBody {
     @NotNull
     private String dataBody;
 
+    @NotNull
+    private String md5Sum;
+
 }

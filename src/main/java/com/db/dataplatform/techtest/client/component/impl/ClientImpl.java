@@ -11,10 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Client code does not require any test coverage
@@ -44,7 +41,7 @@ public class ClientImpl implements Client {
         log.info("Query for data with header block type {}", blockType);
         URI getData = URI_GETDATA.expand(blockType);
         ResponseEntity<DataEnvelope[]> dataEnvelope = restTemplate.getForEntity(getData,DataEnvelope[].class);
-        return Arrays.asList(dataEnvelope.getBody());
+        return Arrays.asList(Objects.requireNonNull(dataEnvelope.getBody()));
     }
 
     @Override

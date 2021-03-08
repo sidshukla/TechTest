@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static com.db.dataplatform.techtest.TestDataHelper.MD5_CHECKSUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -14,7 +15,7 @@ public class DataBodyTests {
 
     @Test
     public void assignDataBodyFieldsShouldWorkAsExpected() {
-        DataBody dataBody = new DataBody(DUMMY_DATA);
+        DataBody dataBody = new DataBody(DUMMY_DATA,MD5_CHECKSUM);
 
         assertThat(dataBody).isNotNull();
         assertThat(dataBody.getDataBody()).isEqualTo(DUMMY_DATA);

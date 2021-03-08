@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.db.dataplatform.techtest.TestDataHelper.createTestDataEnvelopeApiObject;
+import static com.db.dataplatform.techtest.TestDataHelper.createTestDataEnvelopeApiObjectWithWrongMD5Sum;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -70,6 +71,14 @@ public class ServerServiceTests {
 
         assertThat(success).isTrue();
         verify(dataBodyServiceImplMock, times(1)).saveDataBody(eq(expectedDataBodyEntity));
+    }
+
+    @Test
+    public void shouldNotSaveDataEnvelopeMD5MismatchAsExpected() throws NoSuchAlgorithmException, IOException {
+        boolean success = server.saveDataEnvelope(createTestDataEnvelopeApiObjectWithWrongMD5Sum());
+
+        assertThat(success).isFalse();
+        verify(dataBodyServiceImplMock, times(0)).saveDataBody(eq(expectedDataBodyEntity));
     }
 
     @Test

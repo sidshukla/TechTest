@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,25 @@ public class ServerImpl implements Server {
      */
     @Override
     public boolean saveDataEnvelope(DataEnvelope envelope) {
-        // Save to persistence.
-        persist(envelope);
 
-        log.info("Data persisted successfully, data name: {}", envelope.getDataHeader().getName());
-        return true;
+        String clientMd5Sum = envelope.getDataBody().getMd5Sum();
+
+        String generatedMd5Sum = generateMd5Sum(envelope.getDataBody().getDataBody());
+
+        log.info("Generated MD5Sum : {}", generatedMd5Sum);
+
+        //Generate and compare the MD5Sum
+        if(clientMd5Sum.equals(generatedMd5Sum)){
+            // Save to persistence.
+            persist(envelope);
+
+            log.info("Data persisted successfully, data name: {}", envelope.getDataHeader().getName());
+            return true;
+        }
+
+        log.info("Md5Sum Mistmatch, cannot persist data");
+
+        return false;
     }
 
     @Override
@@ -78,6 +93,10 @@ public class ServerImpl implements Server {
         dataBodyEntity.setDataHeaderEntity(dataHeaderEntity);
 
         saveData(dataBodyEntity);
+    }
+
+    private String generateMd5Sum(String dataBody) {
+        return DigestUtils.md5DigestAsHex(dataBody.getBytes());
     }
 
     private void saveData(DataBodyEntity dataBodyEntity) {
